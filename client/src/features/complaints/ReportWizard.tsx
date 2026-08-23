@@ -75,7 +75,10 @@ export const ReportWizard: React.FC = () => {
     return () => clearTimeout(timer);
   }, [category, title, description]);
 
+  const [error, setError] = useState<string | null>(null);
+
   const handleSubmit = async () => {
+    setError(null);
     setSubmitting(true);
     try {
       // 1. Create Complaint
@@ -98,8 +101,12 @@ export const ReportWizard: React.FC = () => {
 
       setSubmittedId(complaint._id);
       triggerConfetti();
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to submit complaint', err);
+      setError(
+        err.response?.data?.message ||
+          'Failed to submit complaint. Please try again or check your connection.'
+      );
     } finally {
       setSubmitting(false);
     }
@@ -334,6 +341,12 @@ export const ReportWizard: React.FC = () => {
               </div>
             )}
           </div>
+
+          {error && (
+            <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium">
+              {error}
+            </div>
+          )}
 
           <div className="flex items-center justify-between pt-4">
             <Button

@@ -32,8 +32,8 @@ export const seedDatabase = async () => {
   await Settings.deleteMany({});
   await Counter.deleteMany({});
 
-  // Reset Counter for publicIds
-  await Counter.create({ name: 'complaint', value: 1000 });
+  // Reset Counter for publicIds (matching the 11 seeded demo complaints FF-1001 through FF-1011)
+  await Counter.create({ name: 'complaint', value: 1011 });
 
   // 1. Create Default Settings
   const settings = await Settings.create({
