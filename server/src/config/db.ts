@@ -1,30 +1,35 @@
 import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import { env } from './env';
 
-let mongoMemoryServer: MongoMemoryServer | null = null;
+let mongoMemoryServer: any = null;
 
 export const connectDB = async (): Promise<void> => {
   try {
-    // Try connecting to provided MONGODB_URI first if not forcing memory DB
-    if (process.env.MONGODB_URI && process.env.USE_MEMORY_DB === 'false') {
+    // If MONGODB_URI is provided or memory DB is explicitly disabled, connect to URI
+    if (process.env.MONGODB_URI || process.env.USE_MEMORY_DB === 'false') {
       await mongoose.connect(env.MONGODB_URI);
       console.log(`[MongoDB] Connected successfully to ${env.MONGODB_URI}`);
       return;
     }
 
-    // Try standard connection with 1.5s timeout; fall back to Memory DB smoothly
+    // Try standard connection with 1.5s timeout; fall back to Memory DB smoothly in local development
     try {
       await mongoose.connect(env.MONGODB_URI, {
         serverSelectionTimeoutMS: 1500,
       });
       console.log(`[MongoDB] Connected successfully to ${env.MONGODB_URI}`);
     } catch (localErr) {
-      console.warn('[MongoDB] Local MongoDB connection failed or timed out. Initializing in-memory MongoDB fallback...');
-      mongoMemoryServer = await MongoMemoryServer.create();
-      const memoryUri = mongoMemoryServer.getUri();
-      await mongoose.connect(memoryUri);
-      console.log(`[MongoDB] Connected to In-Memory MongoDB at ${memoryUri}`);
+      console.warn('[MongoDB] Local MongoDB connection failed. Initializing in-memory MongoDB fallback...');
+      try {
+        const { MongoMemoryServer } = require('mongodb-memory-server');
+        mongoMemoryServer = await MongoMemoryServer.create();
+        const memoryUri = mongoMemoryServer.getUri();
+        await mongoose.connect(memoryUri);
+        console.log(`[MongoDB] Connected to In-Memory MongoDB at ${memoryUri}`);
+      } catch (memErr) {
+        console.error('[MongoDB] In-Memory DB could not be started. Please provide a valid MONGODB_URI.');
+        throw localErr;
+      }
     }
   } catch (error) {
     console.error('[MongoDB] Fatal Connection Error:', error);
@@ -42,3 +47,4 @@ export const disconnectDB = async (): Promise<void> => {
     console.error('[MongoDB] Disconnection error:', error);
   }
 };
+
