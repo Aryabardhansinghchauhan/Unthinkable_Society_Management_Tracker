@@ -1,0 +1,22 @@
+{
+  "name": "fixflow-workspace",
+  "version": "1.0.0",
+  "description": "FixFlow - Society Maintenance Tracker (MERN + TypeScript)",
+  "author": "Aryabardhan Singh Chauhan",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aryabardhansinghchauhan/Unthinkable_Society_Management_Tracker.git"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "seed": "npm run seed --prefix server",
+    "test": "npm test --prefix server",
+    "build": "npm run build --prefix client && npm run build --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
