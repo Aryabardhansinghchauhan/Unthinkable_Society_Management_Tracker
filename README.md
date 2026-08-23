@@ -6,6 +6,17 @@ FixFlow is a comprehensive Society Maintenance Tracker built with the MERN stack
 
 ---
 
+## 🌐 Live Deployment Links
+
+| Component | Platform | Live URL | Status |
+|---|---|---|---|
+| **Frontend Web App** | **Vercel** | [https://unthinkable-society-management-trac.vercel.app](https://unthinkable-society-management-trac.vercel.app) | ![Vercel](https://img.shields.io/badge/Vercel-Deployed-success?style=flat&logo=vercel) |
+| **Backend REST API** | **Render** | [https://unthinkable-society-management-tracker.onrender.com](https://unthinkable-society-management-tracker.onrender.com) | ![Render](https://img.shields.io/badge/Render-Live-success?style=flat&logo=render) |
+| **API Health Check** | **Render** | [https://unthinkable-society-management-tracker.onrender.com/health](https://unthinkable-society-management-tracker.onrender.com/health) | ![Health](https://img.shields.io/badge/API-Healthy-brightgreen?style=flat) |
+| **Database** | **MongoDB Atlas** | `mongodb+srv://...` (Cloud Replica Set) | ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green?style=flat&logo=mongodb) |
+
+---
+
 ## ⚡ Quick Start (Zero Setup Database)
 
 The backend features an automatic in-memory MongoDB fallback (`mongodb-memory-server`), enabling instant local execution without installing MongoDB.
